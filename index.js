@@ -69,7 +69,7 @@ function piggyConsonantWord(word) {
 //////////////////////////////////////
 
 function prepForThePig(text) {
-    text = text.replace(/-|–|—/g, ", ")
+    text = text.replace(/-|–|—/g, ", ")     // Remove all dashes, because they are hecka hard to handle -- make them commas, instead
     text = text.split(' ')
     return text
 }
