@@ -3,11 +3,11 @@ You're probably sitting there right now thinking, "My project would be so much b
 I was thinking the same thing too (about your project I mean). So I wrote this package for you.
 
 # Installation
-npm install pig-latin
+    npm install pig-latin
 
 # Usage
 
-We're not messing around here! This package includes:
+Tired of pig-latin packages that don't actually work? We're not messing around here. This package includes:
 
 - ACCURATE translation of words that start with vowels (with options, because some of you are crazy)
 - ACCURATE dealing with punctuation (mostly -- I'm sure if you really tried you could break it)
@@ -57,3 +57,7 @@ piglatin("help! help! i can't get up!", {capitalize: true})
 
 => 'Elphay! Elphay! Iway antcay etgay upway!'
 ```
+
+# Items to note
+
+- Does not support dashes. Those will be removed and replaced with commas.
