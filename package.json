@@ -3,9 +3,6 @@
   "version": "1.0.1",
   "description": "Translate any English text to pig latin (accurately!), because you must be as bored as I am.",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/isaachess/pig-latin"
