@@ -3,29 +3,39 @@ var _ = require('lodash')
 var vowels = ['a', 'e', 'i', 'o', 'u']
 var alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
 
+//////////////////////////////////////
+///// The Big Pig functions //////////
+//////////////////////////////////////
+
+// This is the master method called in the module
 function piggyAnyText(text, options) {
-    var splitted = text.split(' ')
-    var piggified = splitted.map(function(word) {
+    var splitted,
+        piggified,
+        capitalized
+    splitted = prepForThePig(text)
+    piggified = splitted.map(function(word) {
         return piggyOneWord(word.toLowerCase(), options)
     })
-    return reconstruct(piggified)
+    capitalized = capEachSentence(piggified, options)
+    return reconstruct(capitalized)
 }
 
-function piggyOneWord(word) {
-    console.log('piggyOneWord',word)
-    var bigBacon
-    var formatted = formatWord(word)
-    if (isVowel(formatted.wordPart[0]))       // If first letter is a vowel
-        bigBacon = piggyVowelWord(formatted.wordPart)
-    else
+function piggyOneWord(word, options) {
+    var bigBacon,
+        formatted
+    formatted = formatWord(word)
+
+    // Send the word off to get piggified WITHOUT its punctuation
+    if (isVowel(formatted.wordPart[0]))     // If first letter is a vowel
+        bigBacon = piggyVowelWord(formatted.wordPart, options)
+    else                                    // If first letter is consonant
         bigBacon = piggyConsonantWord(formatted.wordPart)
-    return bigBacon+formatted.puncPart
+    return bigBacon+formatted.puncPart      // Reattach punctuation when returning
 }
 
 // Use this method to piggy a word that starts with a vowel
 function piggyVowelWord(word, options) {
-    console.log('piggyVowelWord',word, options)
-    if (!options || !options.vowelEnding)   // If no options specified, do it MY way
+    if (!options || !options.vowelEnding)   // If no options specified, do it MY way (AKA the "one-and-only-true" way)
         return word+'way'
     else                                    // Else return the specified option (but it's still the WRONG way to do it)
         return word+options.vowelEnding
@@ -33,50 +43,105 @@ function piggyVowelWord(word, options) {
 
 // Method to piggy a word that starts w/ consonant
 function piggyConsonantWord(word) {
-    console.log('piggyConsonantWord',word)
+    var vowelLocations,
+        firstVowelLocation,
+        part1,
+        part2
     // Split the word into its two parts. I know this is ugly, but it works
-    var vowelLocations = vowels.map(function(vowel) {
+    // First find all the vowels
+    vowelLocations = vowels.map(function(vowel) {
         return word.indexOf(vowel)
     })
-    var firstVowelLocation = _.min(vowelLocations, function(location) {
+    // Then find the location of the first vowel
+    firstVowelLocation = _.min(vowelLocations, function(location) {
         if (location < 0)
             return 100
         else return location
     })
-    var part1 = word.slice(0, firstVowelLocation)
-    var part2 = word.slice(firstVowelLocation, word.length)
-
+    // Slice, dice, and reconstruct word
+    part1 = word.slice(0, firstVowelLocation)
+    part2 = word.slice(firstVowelLocation, word.length)
     return part2+part1+'ay'
 }
+
+//////////////////////////////////////
+///// Formatting functions ///////////
+//////////////////////////////////////
+
+function prepForThePig(text) {
+    text = text.replace(/-|–|—/g, ", ")
+    text = text.split(' ')
+    return text
+}
+
+function formatWord(word) {
+    var arrayOfLetters,
+        letterLocs,
+        startOfPunc,
+        wordPart,
+        puncPart
+    word = word.replace("'", "")            // Remove apostrophes, because the piggy Latin don't need no stinkin' apostrophes!
+
+    // Split into an array of single letters
+    arrayOfLetters = word.split('')
+    // Find all the locations of letters, as opposed to other symbols
+    letterLocs = arrayOfLetters.map(function(letter) {
+        return alphabet.indexOf(letter)
+    })
+    // Find where the punctuation begins -- this assumes punctuation is always at the END of a word
+    startOfPunc = letterLocs.indexOf(-1)
+    if (startOfPunc < 0) startOfPunc = word.length
+    // Return the word and its punctuation separately -- they'll be reattached at the very end
+    wordPart = word.slice(0, startOfPunc)
+    puncPart = word.slice(startOfPunc, word.length)
+    return {
+        wordPart:wordPart,
+        puncPart:puncPart
+    }
+}
+
+function capEachSentence(piggified, options) {
+    var timetoCap,
+        capped
+    // If you won't want it capitalized ... then we won't
+    if (!options || !options.capitalize) return piggified
+
+    // Proceed ...
+    piggified[0] = capitalizeWord(piggified[0])     // Capitalize first word
+    capped = piggified.map(function(word) {
+        if (timetoCap) {
+            word = capitalizeWord(word)
+            timetoCap = false
+        }
+
+        if (endsSentence(word[word.length-1]))
+            timetoCap = true
+        else
+            timetoCap = false
+
+        return word
+    })
+    return capped
+}
+
+//////////////////////////////////////
+///// Helper functions ///////////////
+//////////////////////////////////////
 
 function reconstruct(piggified) {
     return piggified.join(' ')
 }
 
-function formatWord(word) {
-    console.log('formatWord',word)
-    word = word.replace("'", "")
-    var arrayOfLetters = word.split("")
-    console.log('arrayOfLetters',arrayOfLetters)
-    var letterLocs = arrayOfLetters.map(function(letter) {
-        return alphabet.indexOf(letter)
-    })
-    console.log('letterLocs',letterLocs)
-    var startOfPunc = letterLocs.indexOf(-1)
-    if (startOfPunc < 0) startOfPunc = word.length
-    var wordPart = word.slice(0, startOfPunc)
-    var puncPart = word.slice(startOfPunc, word.length)
-    var x = {
-        wordPart:wordPart,
-        puncPart:puncPart
-    }
-    console.log('x',x)
-    return x
+function isVowel(letter) {
+    return !!_.find(vowels, function(vowel) {return vowel == letter})
 }
 
-function isVowel(letter) {
-    console.log('isVowel',letter)
-    return !!_.find(vowels, function(vowel) {return vowel == letter})
+function endsSentence(char) {
+    return char == "!" || char == "?" || char == "."
+}
+
+function capitalizeWord(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1)
 }
 
 module.exports = piggyAnyText
