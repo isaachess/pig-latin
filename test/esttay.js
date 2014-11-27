@@ -15,4 +15,9 @@ describe('igpay-atinlay', function(){
 	var exResult = 'ier amer anneer.';
 	pigLatin('i am anne.', {vowelEnding: 'er'}).should.equal(exResult);
     });
+
+    it('ouldshay eepkay inputyay apitalizationcay', function(){
+	var exResult = 'Iway amway Anneway.';
+	pigLatin('I am Anne.').should.equal(exResult);
+    });
 });
