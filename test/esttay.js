@@ -10,4 +10,9 @@ describe('igpay-atinlay', function(){
     it('ouldshay apitalizecay entencessay', function(){
 	pigLatin('oh why bother...', {capitalize: true}).should.equal('Ohway ywhay otherbay...');
     });
+
+    it('ouldshay allowyay angingchay owelvay endingsyay orfay ordsway endingyay ithway owelsvay', function(){
+	var exResult = 'ier amer anneer.';
+	pigLatin('i am anne.', {vowelEnding: 'er'}).should.equal(exResult);
+    });
 });
