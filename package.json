@@ -7,22 +7,10 @@
     "type": "git",
     "url": "https://github.com/isaachess/pig-latin"
   },
-  "keywords": [
-    "pig",
-    "latin",
-    "piglatin",
-    "translate"
-  ],
+  "keywords": ["pig", "latin", "piglatin", "translate"],
   "author": "Isaac Hess <isaachess@gmail.com> (https://github.com/isaachess)",
   "license": "ISC",
-  "scripts": {
-    "test": "mocha test"
-  },
   "dependencies": {
     "lodash": "^2.4.1"
-  },
-  "devDependencies": {
-    "chai": "^1.10.0",
-    "mocha": "^2.0.1"
   }
 }

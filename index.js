@@ -14,7 +14,7 @@ function piggyAnyText(text, options) {
         capitalized
     splitted = prepForThePig(text)
     piggified = splitted.map(function(word) {
-        return piggyOneWord(word, options)
+        return piggyOneWord(word.toLowerCase(), options)
     })
     capitalized = capEachSentence(piggified, options)
     return reconstruct(capitalized)
@@ -26,7 +26,7 @@ function piggyOneWord(word, options) {
     formatted = formatWord(word)
 
     // Send the word off to get piggified WITHOUT its punctuation
-    if (isVowel(formatted.wordPart[0].toLowerCase()))     // If first letter is a vowel
+    if (isVowel(formatted.wordPart[0]))     // If first letter is a vowel
         bigBacon = piggyVowelWord(formatted.wordPart, options)
     else                                    // If first letter is consonant
         bigBacon = piggyConsonantWord(formatted.wordPart)
@@ -86,7 +86,7 @@ function formatWord(word) {
     arrayOfLetters = word.split('')
     // Find all the locations of letters, as opposed to other symbols
     letterLocs = arrayOfLetters.map(function(letter) {
-        return alphabet.indexOf(letter.toLowerCase())
+        return alphabet.indexOf(letter)
     })
     // Find where the punctuation begins -- this assumes punctuation is always at the END of a word
     startOfPunc = letterLocs.indexOf(-1)
