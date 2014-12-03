@@ -45,8 +45,13 @@ function piggyVowelWord(word, options) {
 function piggyConsonantWord(word) {
     var vowelLocations,
         firstVowelLocation,
+        wordWasCapitalized,
         part1,
         part2
+
+    // Check if the word was capitalized before piggifying
+    wordWasCapitalized = wasCapitalized(word);
+
     // Split the word into its two parts. I know this is ugly, but it works
     // First find all the vowels
     vowelLocations = vowels.map(function(vowel) {
@@ -61,6 +66,16 @@ function piggyConsonantWord(word) {
     // Slice, dice, and reconstruct word
     part1 = word.slice(0, firstVowelLocation)
     part2 = word.slice(firstVowelLocation, word.length)
+
+    // If the word was capitalized before piggifying
+    if(wordWasCapitalized){
+	// Set original first letter to lower case
+	part1 = part1.charAt(0).toLowerCase() + part1.slice(1)
+	
+	// Capitalize the first letter of the word
+	part2 = capitalizeWord(part2)
+    }
+
     return part2+part1+'ay'
 }
 
