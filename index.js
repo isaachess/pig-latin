@@ -16,8 +16,7 @@ function piggyAnyText(text, options) {
     piggified = splitted.map(function(word) {
         return piggyOneWord(word, options)
     })
-    capitalized = capEachSentence(piggified, options)
-    return reconstruct(capitalized)
+    return reconstruct(piggified)
 }
 
 function piggyOneWord(word, options) {
@@ -50,7 +49,7 @@ function piggyConsonantWord(word) {
         part2
 
     // Check if the word was capitalized before piggifying
-    wordWasCapitalized = wasCapitalized(word);
+    wordWasCapitalized = wasCapitalized(word)
 
     // Split the word into its two parts. I know this is ugly, but it works
     // First find all the vowels
@@ -113,30 +112,6 @@ function formatWord(word) {
         wordPart:wordPart,
         puncPart:puncPart
     }
-}
-
-function capEachSentence(piggified, options) {
-    var timetoCap,
-        capped
-    // If you won't want it capitalized ... then we won't
-    if (!options || !options.capitalize) return piggified
-
-    // Proceed ...
-    piggified[0] = capitalizeWord(piggified[0])     // Capitalize first word
-    capped = piggified.map(function(word) {
-        if (timetoCap) {
-            word = capitalizeWord(word)
-            timetoCap = false
-        }
-
-        if (endsSentence(word[word.length-1]))
-            timetoCap = true
-        else
-            timetoCap = false
-
-        return word
-    })
-    return capped
 }
 
 //////////////////////////////////////
