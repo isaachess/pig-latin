@@ -20,4 +20,10 @@ describe('igpay-atinlay', function(){
 	var exResult = 'Iway amway Anneway.';
 	pigLatin('I am Anne.').should.equal(exResult);
     });
+
+    it('ouldshay apitalizecay irstfay etterlay ofyay iggifiedpay ordway ifyay alreadyyay apitalizedcay', function(){
+	var input = 'What are you having for lunch?';
+	var exResult = 'Atwhay areway ouyay avinghay orfay unchlay?';
+	pigLatin(input).should.equal(exResult);
+    });
 });
