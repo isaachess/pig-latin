@@ -1,6 +1,6 @@
 {
   "name": "pig-latin",
-  "version": "2.0",
+  "version": "2.0.0",
   "description": "Translate any English text to pig latin (accurately!), because you must be as bored as I am.",
   "main": "index.js",
   "repository": {
