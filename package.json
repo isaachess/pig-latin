@@ -1,6 +1,6 @@
 {
   "name": "pig-latin",
-  "version": "1.0.1",
+  "version": "2.0",
   "description": "Translate any English text to pig latin (accurately!), because you must be as bored as I am.",
   "main": "index.js",
   "repository": {
@@ -11,7 +11,8 @@
     "pig",
     "latin",
     "piglatin",
-    "translate"
+    "translate",
+    "pig-latin"
   ],
   "author": "Isaac Hess <isaachess@gmail.com> (https://github.com/isaachess)",
   "license": "ISC",
