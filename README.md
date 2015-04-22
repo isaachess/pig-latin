@@ -7,7 +7,11 @@ I was thinking the same thing too (about your project I mean). So I wrote this p
 
 # Version 2.0
 
-Now with better capitalization support! Now with EVEN. MORE. BACON.
+Now with better capitalization support (see below)! Now with EVEN. MORE. BACON.
+
+## Capitalization support
+
+We no longer have the 'capitalize' option. Instead, it simply maintains any capitalized word that you send to it.
 
 # Usage
 
@@ -51,15 +55,6 @@ piglatin("I am so happy inside", {vowelEnding: 'juice'})
 => 'ijuice amjuice osay appyhay insidejuice'
 
 // NOTE: this option only affects words that start with vowels
-```
-
-### Capitalize
-If you want to capitalize each sentence, set this to true.
-
-```javascript
-piglatin("help! help! i can't get up!", {capitalize: true})
-
-=> 'Elphay! Elphay! Iway antcay etgay upway!'
 ```
 
 # Items to note
