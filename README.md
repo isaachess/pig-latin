@@ -5,6 +5,10 @@ I was thinking the same thing too (about your project I mean). So I wrote this p
 # Installation
     npm install pig-latin
 
+# Version 2.0
+
+Now with better capitalization support! Now with EVEN. MORE. BACON.
+
 # Usage
 
 Tired of pig-latin packages that don't actually work? We're not messing around here. This package includes:
