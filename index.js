@@ -1,44 +1,82 @@
-var _ = require('lodash')
+var _ = require('lodash');
 
 var vowels = ['a', 'e', 'i', 'o', 'u'];
-var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-var containsLetters = /\w/g
-var punctuationBeforeWord = /(\W+)(?=\w)/g
-var punctuationAfterWord = /\W+$/g
-var punctuation = /\W/g
-var spaces = /\s+/g
+var letters = /[a-zA-Z]/g;
+var punctuationBeforeWord = /(\W+)(?=\w)/g;
+var punctuationAfterWord = /\W+$/g;
+var punctuation = /\W/g;
+var spaces = /\s+/g;
+
+if (typeof String.prototype.startsWith !== 'function') {
+  String.prototype.startsWith = function (str){
+    return this.slice(0, str.length) === str;
+  };
+}
+//////////////////////////////////////
+///// Formatting functions ///////////
+//////////////////////////////////////
+
+function prepForThePig(text) {
+  var noDashes = text.replace(/-|–|—/g, ", "); // Remove all dashes, because they are hecka hard to handle -- make them commas, instead
+  return noDashes.split(spaces);
+}
+
+
+
+//////////////////////////////////////
+///// Helper functions ///////////////
+//////////////////////////////////////
+
+function isVowel(letter) {
+  return !!_.find(vowels, function(vowel) {
+    return vowel === letter;
+  });
+}
+
+function arrayStartsWithVowel(array) {
+  return isVowel(array[0].toLowerCase());
+}
+
+function reconstruct(piggified) {
+  return piggified.join(' ');
+}
+
+function capitalizeWord(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+function wasCapitalized(word) {
+  var firstLetter = word.charAt(0);
+  return firstLetter === firstLetter.toUpperCase();
+}
+
 
 //////////////////////////////////////
 ///// The Big Pig functions //////////
 //////////////////////////////////////
 
-// This is the master method called in the module
-function piggyAnyText(text, options) {
-  var arrayOfWords = prepForThePig(text);
-  var piggified = arrayOfWords.map(function(word) {
-    return piggyOneWord(word, options);
-  })
-  return reconstruct(piggified);
-}
+function formatWord(word) {
 
-function piggyOneWord(word, options) {
-  if (!word || word.length < 1) {
-    return word;
+  var start = "";
+  var beginningPuncMatches = word.match(punctuationBeforeWord);
+  if(beginningPuncMatches && beginningPuncMatches.length > 0){
+    start = beginningPuncMatches[0];
   }
-  var formatted = formatWord(word);
-  var bigBacon = piggyVowelOrConsonantWord(formatted.wordPart, options);
-    // Send the word off to get piggified WITHOUT its punctuation
-  return formatted.startPuncPart + bigBacon + formatted.endPuncPart; // Reattach punctuation when returning
-}
 
-function piggyVowelOrConsonantWord(wordPart, options) {
-  if (arrayStartsWithVowel(wordPart)) {
-    // If first letter is a vowel
-    return piggyVowelWord(wordPart, options);
-  } else {
-    // If first letter is consonant
-    return piggyConsonantWord(wordPart);
+  var end = "";
+  var endPuncMatches = word.match(punctuationAfterWord);
+  if(endPuncMatches && endPuncMatches.length > 0){
+    end = endPuncMatches[0];
   }
+
+  var plainWord = word.replace(punctuation, ""); // Remove apostrophes, because the piggy Latin don't need no stinkin' apostrophes!
+
+  // Return the word and its punctuation separately -- they'll be reattached at the very end
+  return {
+    startPuncPart: start,
+    wordPart: plainWord,
+    endPuncPart: end
+  };
 }
 
 // Use this method to piggy a word that starts with a vowel
@@ -79,68 +117,58 @@ function piggyConsonantWord(word) {
   return part2 + part1 + 'ay';
 }
 
-//////////////////////////////////////
-///// Formatting functions ///////////
-//////////////////////////////////////
-
-function prepForThePig(text) {
-  var noDashes = text.replace(/-|–|—/g, ", "); // Remove all dashes, because they are hecka hard to handle -- make them commas, instead
-  return noDashes.split(spaces);
-}
-
-function formatWord(word) {
-
-  var start = "";
-  var beginningPuncMatches = word.match(punctuationBeforeWord);
-  if(beginningPuncMatches && beginningPuncMatches.length > 0){
-    start = beginningPuncMatches[0];
+function piggyVowelOrConsonantWord(wordPart, options) {
+  if (!wordPart || wordPart.length < 1) {
+    return wordPart;
   }
-
-  var end = "";
-  var endPuncMatches = word.match(punctuationAfterWord);
-  if(endPuncMatches && endPuncMatches.length > 0){
-    end = endPuncMatches[0];
-  }
-
-  var plainWord = word.replace(punctuation, ""); // Remove apostrophes, because the piggy Latin don't need no stinkin' apostrophes!
-
-  // Return the word and its punctuation separately -- they'll be reattached at the very end
-  return {
-    startPuncPart: start,
-    wordPart: plainWord,
-    endPuncPart: end
+  if (arrayStartsWithVowel(wordPart)) {
+    // If first letter is a vowel
+    return piggyVowelWord(wordPart, options);
+  } else {
+    // If first letter is consonant
+    return piggyConsonantWord(wordPart);
   }
 }
 
-//////////////////////////////////////
-///// Helper functions ///////////////
-//////////////////////////////////////
-
-function arrayStartsWithVowel(array) {
-  return isVowel(array[0].toLowerCase());
+function piggyOneWord(word, options) {
+  if (!word || word.length < 1) {
+    return word;
+  }
+  if(word.search(letters) === -1){
+    return word;
+  }
+  if(word.startsWith("{")){
+    return word;
+  }
+  if(word.startsWith("&")){
+    return word;
+  }
+  if(word.startsWith("<")){
+    return word;
+  }
+  if(word.startsWith("/")){
+    return word;
+  }
+  if(word.startsWith("http://")){
+    return word;
+  }
+  var formatted = formatWord(word);
+  var bigBacon = piggyVowelOrConsonantWord(formatted.wordPart, options);
+    // Send the word off to get piggified WITHOUT its punctuation
+  return formatted.startPuncPart + bigBacon + formatted.endPuncPart; // Reattach punctuation when returning
 }
 
-function reconstruct(piggified) {
-  return piggified.join(' ');
-}
-
-function isVowel(letter) {
-  return !!_.find(vowels, function(vowel) {
-    return vowel == letter;
-  })
-}
-
-function endsSentence(char) {
-  return char == "!" || char == "?" || char == ".";
-}
-
-function capitalizeWord(word) {
-  return word.charAt(0).toUpperCase() + word.slice(1);
-}
-
-function wasCapitalized(word) {
-  var firstLetter = word.charAt(0);
-  return firstLetter == firstLetter.toUpperCase();
+// This is the master method called in the module
+function piggyAnyText(text, options) {
+  text = "" + text;
+  if(!text || text.trim().length < 1){
+    return text;
+  }
+  var arrayOfWords = prepForThePig(text);
+  var piggified = arrayOfWords.map(function(word) {
+    return piggyOneWord(word, options);
+  });
+  return reconstruct(piggified);
 }
 
 module.exports = piggyAnyText;

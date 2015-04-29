@@ -1,3 +1,4 @@
+/*exported chai, should */
 var chai = require('chai');
 var should = chai.should();
 var pigLatin = require('./../index');
