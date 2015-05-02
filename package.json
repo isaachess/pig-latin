@@ -14,16 +14,31 @@
     "translate",
     "pig-latin"
   ],
-  "author": "Isaac Hess <isaachess@gmail.com> (https://github.com/isaachess)",
+  "files": [
+    "index.js"
+  ],
+  "author": {
+    "name": "Isaac Hess",
+    "email": "isaachess@gmail.com",
+    "url": "https://github.com/isaachess"
+  },
   "license": "ISC",
   "scripts": {
-    "test": "mocha test"
+    "test": "grunt"
   },
   "dependencies": {
     "lodash": "^2.4.1"
   },
   "devDependencies": {
     "chai": "^1.10.0",
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "load-grunt-tasks": "^1.0.0",
+    "time-grunt": "^1.0.0",
+    "grunt-mocha-cli": "^1.11.0",
+    "jshint-stylish": "^1.0.0"
   }
 }
