@@ -24,7 +24,7 @@ function piggyOneWord(word, options) {
 }
 
 function piggyVowelOrConsonantWord(wordPart, options) {
-    if (word == '') return '';              // If the word is empty, return an empty string
+    if (wordPart == '') return '';          // If the word is empty, return an empty string
     if (arrayStartsWithVowel(wordPart))     // If first letter is a vowel
         return piggyVowelWord(wordPart, options)
     else                                    // If first letter is consonant
