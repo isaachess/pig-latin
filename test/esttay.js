@@ -22,4 +22,8 @@ describe('igpay-atinlay', function(){
 	var exResult = 'Atwhay areway ouyay avinghay orfay unchlay?';
 	pigLatin(input).should.equal(exResult);
     });
+
+    it('ouldshay ignoreway onwordsnay', function(){
+        pigLatin('...').should.equal('...');
+    });
 });
